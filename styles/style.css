@@ -1,0 +1,67 @@
+/* Header */
+
+
+.header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+
+.main-title {
+    display: flex;
+    flex-direction: row;
+    line-height: 1px;
+}
+
+.small-title {
+    font-size: 12px; /* Adjust this value as needed */
+}
+
+
+img {
+    width: 30px;
+    height: 30px;
+}
+
+logo-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Lower than the Header */
+
+.background {
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    align-items: center;
+    background-color: rgb(188, 248, 248);
+}
+
+/* Controls */
+
+.time-temp-instructions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+}
+
+.cooking-feed {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+}
+
+/* Time and Temp Switch */
+
+.switch {
+    display: flex;
+    flex-direction: row;
+}
+
