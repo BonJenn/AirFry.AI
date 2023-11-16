@@ -1,47 +1,51 @@
 body {
     font-family: 'DM Sans', sans-serif;
   }
-  
-
 
 /* Header */
 
+
+/* Header Background */
 .header {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     background-color: white;
-    height: 75px;
-    line-height: 1px;
-    
+    height: 100px;
+    line-height: 1px;  
 }
 
+/* Site Title Structure */
 .main-title {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
-h1 {
+/* Site Title */
+.title {
+    font-family: 'Work Sans';
     font-weight: bold;
+    font-size: 50px;
 }
-
 
 span {
     color: rgb(138,156,195);
 
 }
 
+/* Site Subheading */
 .small-title {
-    font-size: 8px;
+    font-size: 12px;
     margin-top: -5px;
+    margin-bottom: 5px;
 }
 
-
+/* Air Fryer Graphic */
 img {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
 }
 
 logo-image {
@@ -49,6 +53,7 @@ logo-image {
     justify-content: center;
     align-items: center;
 }
+
 
 /* Lower than the Header */
 
@@ -60,8 +65,21 @@ logo-image {
     background-color: rgb(247,247,247);
 }
 
-/* Controls */
+/* Time & Temp / Recipe Switch */
+.switch {
+    margin: 10px;
+}
 
+.switch label {
+    font-family: 'DM Sans';
+    font-weight: bold;
+    color: rgb(138,156,195);
+    margin-right: 5px; 
+}
+
+/* Main Controls */
+
+/* Time & Temp White Box */
 .time-temp-instructions {
     display: flex;
     flex-direction: column;
@@ -75,6 +93,7 @@ logo-image {
     box-shadow:0 0 40px -10px rgba(0,0,0,.3); 
 }
 
+/* Recipe White Box */
 .recipe-instructions {
     display: flex;
     flex-direction: column;
@@ -88,6 +107,11 @@ logo-image {
     box-shadow:0 0 40px -10px rgba(0,0,0,.3); 
 }
 
+/* White Box Buttons and Unit Selection */
+.unit {
+    margin: 5px;
+}
+
 button {
     background-color: rgb(138,156,195);
     color: white;
@@ -95,6 +119,7 @@ button {
     height: 30px;
     border-radius: 10px;
     border: none;
+    margin: 10px;
 
 }
 
@@ -103,11 +128,13 @@ button:hover {
     background-color: rgb(252, 193, 103);
 }
 
+/* What Others are Cooking Feed */
+
 .cooking-feed {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: white;
+    
     
 }
 
