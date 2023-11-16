@@ -1,5 +1,10 @@
-/* Header */
+body {
+    font-family: 'DM Sans', sans-serif;
+  }
+  
 
+
+/* Header */
 
 .header {
     display: flex;
@@ -7,16 +12,30 @@
     justify-content: center;
     align-items: center;
     background-color: white;
+    height: 75px;
+    line-height: 1px;
+    
 }
 
 .main-title {
     display: flex;
     flex-direction: row;
-    line-height: 1px;
+    align-items: center;
+}
+
+h1 {
+    font-weight: bold;
+}
+
+
+span {
+    color: rgb(138,156,195);
+
 }
 
 .small-title {
-    font-size: 12px; /* Adjust this value as needed */
+    font-size: 8px;
+    margin-top: -5px;
 }
 
 
@@ -38,7 +57,7 @@ logo-image {
     flex-direction: column;
     justify-self: center;
     align-items: center;
-    background-color: rgb(188, 248, 248);
+    background-color: rgb(247,247,247);
 }
 
 /* Controls */
@@ -49,6 +68,39 @@ logo-image {
     align-items: center;
     justify-content: center;
     background-color: white;
+    width: 300px;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 20px;
+    box-shadow:0 0 40px -10px rgba(0,0,0,.3); 
+}
+
+.recipe-instructions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    width: 300px;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 20px;
+    box-shadow:0 0 40px -10px rgba(0,0,0,.3); 
+}
+
+button {
+    background-color: rgb(138,156,195);
+    color: white;
+    width: 120px;
+    height: 30px;
+    border-radius: 10px;
+    border: none;
+
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: rgb(252, 193, 103);
 }
 
 .cooking-feed {
@@ -56,6 +108,7 @@ logo-image {
     flex-direction: column;
     align-items: center;
     background-color: white;
+    
 }
 
 /* Time and Temp Switch */
