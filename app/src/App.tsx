@@ -239,7 +239,7 @@ function App() {
         </div>
       )}
      
-      <SignUpForm />
+ 
     </>
   );
 }
