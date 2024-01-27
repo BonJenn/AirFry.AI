@@ -9,6 +9,11 @@ function SignUpForm() {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleSignUp = async () => {
+    if (password.length < 6 || password.length > 128) {
+      alert('Password must be between 6 and 128 characters.');
+      return;
+    }
+
     if (password !== confirmPassword) {
         alert('Passwords do not match!');
         return;
@@ -20,6 +25,20 @@ function SignUpForm() {
       const credentials = Realm.Credentials.emailPassword(email, password);
       const newUser = await app.emailPasswordAuth.registerUser({ email, password });
       console.log('User created:', newUser);
+
+      // Get a reference to the collection
+      const mongo = app.currentUser?.mongoClient("mongodb-atlas");
+      const userSignUp = mongo?.db("AirFryAI").collection("Users");
+
+      // Encapsulate the database operation in an async function
+      const insertUserDocument = async () => {
+        const userDocument = { email, password };
+        const result = await userSignUp?.insertOne(userDocument);
+        console.log("Successfully wrote user with id:", result?.insertedId);
+      };
+
+      // Call the async function to perform the database operation
+      await insertUserDocument();
     } catch (err) {
       console.error('Error signing up:', err);
     }
