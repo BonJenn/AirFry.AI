@@ -1,0 +1,26 @@
+{
+  "name": "openai",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.5",
+    "express": "^4.18.2",
+    "mongodb": "^6.3.0",
+    "mongodb-stitch-browser-sdk": "^4.8.0",
+    "mongoose": "^8.1.0",
+    "realm-web": "^2.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite --host",
+    "start": "node app/src/main.tsx"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2"
+  }
+}

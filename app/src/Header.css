@@ -1,0 +1,41 @@
+
+
+.navigation {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    background-color: black;
+    height: 10;
+    gap: 10px;
+
+}
+
+.headerInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 120px;
+    background-color: white;
+}
+
+h1 {
+    margin-bottom: 0; 
+    margin-top: 0;
+   
+ 
+}
+
+h1 span:first-child {
+    color: black;
+}
+
+h1 span:last-child {
+    color: #8a9cc3;
+}
+
+h3 {
+    color: black;
+    margin-top: 0; /* Remove margin at the top of h3 */
+}
+

@@ -1,0 +1,47 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  position: fixed; /* Add this line */
+  top: 0;          /* And this line */
+  width: 100%;     /* To ensure it spans the full width */
+  z-index: 1000;   /* To ensure it stays on top of other content */
+}
+
+body {
+  background-color: #f7f7f7;
+}
+
+
+h3 {
+  color: black;
+}
+
+p {
+  color: black;
+}
+
+.airFryTimeTemp {
+  background-color: red;
+}
+
+
+
+.input-area {
+  display: flex;
+  flex-direction: column;
+  background-color: #8a9cc3;
+}
+
+button {
+  margin: 10px;
+  padding: 10px;
+  background-color: #8a9cc3;
+  color: white;
+}
+
+textarea {
+  background-color: #8a9cc3;
+}
+
