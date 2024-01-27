@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import './Header.css';
 import SignUpForm from './SignUpForm';
-import { API_KEY } from './config';
+import LoginForm from './LoginForm'; // Assuming you have a LoginForm component
 
 
 function Header() {
     const [showSignUp, setShowSignUp] = useState(false);
+    const [showLogin, setShowLogin] = useState(false); // New state for login popup
 
     const toggleSignUp = () => setShowSignUp(!showSignUp);
+    const toggleLogin = () => setShowLogin(!showLogin); // New toggle function for login popup
 
     return (
         <div className="header">
             <div className="navigation">
-                <h4 onClick={() => console.log(API_KEY)}>Login</h4>
+                <h4 onClick={toggleLogin}>Log In</h4> {/* Bind the toggle function */}
                 <h4 onClick={toggleSignUp}>Sign up</h4>
                 <h4>My account</h4>
             </div>
@@ -26,6 +28,15 @@ function Header() {
                     <div className="signupPopup">
                         <SignUpForm />
                         <button onClick={toggleSignUp}>Close</button>
+                    </div>
+                </>
+            )}
+            {showLogin && ( // New login popup JSX
+                <>
+                    <div className="overlay" onClick={toggleLogin}></div>
+                    <div className="loginPopup">
+                        <LoginForm />
+                        <button onClick={toggleLogin}>Close</button>
                     </div>
                 </>
             )}
