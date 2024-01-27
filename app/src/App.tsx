@@ -4,13 +4,7 @@ import 'react-toggle/style.css'; // Importing styles for the toggle component
 import './App.css'; // Importing custom styles for the app
 import Header from './Header.tsx'; // Importing the Header component
 import * as Realm from "realm-web";
-import SignUpForm from './SignUpForm';
-import { REALM_APP_ID } from './config.ts';
-
-
-// API key for OpenAI, should be kept secret and not exposed in the frontend in a real-world app
-const API_KEY = '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';
-   // App.tsx
+import { REALM_APP_ID, API_KEY } from './config.ts';
 
 const app = new Realm.App({ id: REALM_APP_ID });
 
@@ -27,6 +21,11 @@ function App() {
   const [toggleState, setToggleState] = useState(false);
   // State hook for managing the unit of temperature (Fahrenheit/Celsius)
   const [unit, setUnit] = useState('Fahrenheit');
+
+  // State hook for managing the loading state of the recipe API call
+  const [isCookingTimeLoading, setIsCookingTimeLoading] = useState(false);
+  const [isRecipeLoading, setIsRecipeLoading] = useState(false);
+
 
   // Function to get a user token and log in
   async function login() {
@@ -46,33 +45,6 @@ function App() {
     login();
   }, []);
 
-  async function writeDataToMongoDB() {
-    const credentials = Realm.Credentials.anonymous(); // Or use another authentication method
-    try {
-      // Log in to Realm with the credentials
-      const user = await app.logIn(credentials);
-      console.log("Successfully logged in!", user);
-  
-      // Define the document you want to write
-      const myDocument = {
-        name: "Test Item 2",
-        description: "This is a test item for the database.",
-        createdAt: new Date(),
-      };
-  
-      // Get a reference to the collection
-      const mongo = app.currentUser.mongoClient("mongodb-atlas"); // Replace "mongodb-atlas" with your MongoDB service name if different
-      const myCollection = mongo.db("AirFryAI").collection("Test");
-  
-      // Perform the write operation
-      const result = await myCollection.insertOne(myDocument);
-      console.log("Successfully wrote document with id:", result.insertedId);
-    } catch (err) {
-      console.error("Failed to write data to MongoDB", err);
-    }
-  }
-
-
   async function writeRecipeToDatabase(recipeContent: string) {
     const credentials = Realm.Credentials.anonymous(); // Or use another authentication method
     try {
@@ -84,12 +56,11 @@ function App() {
         content: recipeContent,
         createdAt: new Date(), // Optionally add a timestamp
       };
-  
+
       // Get a reference to the collection
       const mongo = app.currentUser?.mongoClient("mongodb-atlas");
       const recipesCollection = mongo?.db("AirFryAI").collection("Recipes");
-  
-      // Perform the write operation
+
       // Perform the write operation with the recipe object
       const result = await recipesCollection?.insertOne(recipeDocument);
       console.log("Successfully wrote recipe with id:", result?.insertedId);
@@ -98,44 +69,49 @@ function App() {
     }
   }
 
-
-
-
-  // Function to call OpenAI API for getting cooking time
+  // Function to call OpenAI for Cook Time
   async function callOpenAIAPIForCookTime() {
+    setIsCookingTimeLoading(true); // If you have a loading state for this API call
     const APIBody = {
-      model: 'gpt-4', // Specifies the model to be used
+      model: 'gpt-4',
       messages: [
         {
           role: 'user',
-          content: `How long do I airfry ${airFryInput} in ${unit}? Answer in one sentence`,
+          content: `How long do I air fry ${airFryInput}?`,
         },
       ],
-      temperature: 0.5, // Controls randomness in the response
-      max_tokens: 1024, // Maximum length of the response
+      temperature: 0.5,
+      max_tokens: 1024,
       top_p: 1,
       frequency_penalty: 0,
       presence_penalty: 0,
     };
-
+  
     // Fetch request to OpenAI API
     await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + API_KEY, // Authorization header with API key
+        Authorization: 'Bearer ' + API_KEY,
       },
       body: JSON.stringify(APIBody),
     })
-      .then((data) => data.json())
+      .then((response) => response.json())
       .then((data) => {
-        // Setting the response from the API to the airFryOutput state
+        // Assuming the API returns a single message response
         setairFryOutput(data.choices[0].message.content.trim());
+      })
+      .catch((error) => {
+        console.error('Failed to fetch data from OpenAI API', error);
+      })
+      .finally(() => {
+        setIsCookingTimeLoading(false); // If you have a loading state for this API call
       });
   }
 
   // Function to call OpenAI API for getting a recipe
   async function callOpenAIAPIForRecipe() {
+    setIsRecipeLoading(true); // Set loading to true when the API call starts
     const APIBody = {
       model: 'gpt-4',
       messages: [
@@ -165,6 +141,12 @@ function App() {
         // Setting the response from the API to the airFryRecOutput state
         setairFryRecOutput(data.choices[0].message.content.trim());
         writeRecipeToDatabase(data.choices[0].message.content.trim());
+      })
+      .catch((error) => {
+        console.error('Failed to fetch data from OpenAI API', error);
+      })
+      .finally(() => {
+        setIsRecipeLoading(false); // Set loading to false when the API call is finished
       });
   }
 
@@ -172,7 +154,6 @@ function App() {
   return (
     <>
       <Header /> {/* Rendering the Header component */}
-  
       <div>
         {/* Toggle component for switching between modes */}
         <Toggle
@@ -182,7 +163,7 @@ function App() {
       </div>
       <div>
         {/* Radio buttons for selecting the unit of temperature */}
-        <label style={{ color: 'black' }}>
+        <label>
           <input
             type="radio"
             value="Fahrenheit"
@@ -191,7 +172,7 @@ function App() {
           />
           Fahrenheit
         </label>
-        <label style={{ color: 'black' }}>
+        <label>
           <input
             type="radio"
             value="Celsius"
@@ -213,8 +194,8 @@ function App() {
             onChange={(e) => setairFryInput(e.target.value)}
             placeholder="Enter food item"
           />
-          <button onClick={callOpenAIAPIForCookTime}>Get Cooking Time</button>
-
+          {/* Button to trigger API call for cooking time */}
+          <button onClick={callOpenAIAPIForCookTime}>Get Cooking Time</button> 
           {/* Displaying the air frying time result */}
           <div>
             <p>{airFryOutput}</p>
@@ -222,7 +203,7 @@ function App() {
         </div>
       ) : (
         // If toggleState is false, show the recipe input and button
-        <div>
+        <div className="airFryRecipe">
           {/* Input field for air fryer recipe query */}
           <input
             type="text"
@@ -230,20 +211,24 @@ function App() {
             onChange={(e) => setairFryRecInput(e.target.value)}
             placeholder="Enter food item for recipe"
           />
+          {/* Button to trigger API call for recipe */}
           <button onClick={callOpenAIAPIForRecipe}>Get Recipe</button>
-
           {/* Displaying the air fryer recipe result */}
           <div>
             <p>{airFryRecOutput}</p>
           </div>
         </div>
       )}
-     
- 
+
+      {/* Modal popup for loading state */}
+      {isRecipeLoading && (
+        <div className="modal">
+          <p>One sec, AI is making you your recipe for {airFryRecInput}</p>
+        </div>
+      )}
     </>
   );
 }
 
 export default App;
 export { REALM_APP_ID };
-

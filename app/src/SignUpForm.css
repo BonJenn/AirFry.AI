@@ -1,15 +1,14 @@
 form {
   display: flex;
   height: 300px;
-
   flex-direction: column;
   align-items: center;
   justify-content: start;
-  background-color: pink;
   gap: 10px; /* This adds space between your form elements */
 }
 
-.test {
-    display: flex;
-    flex-direction: column;
+h1 {
+    color: black;
+    margin: 10px;
+    padding: 10px;
 }

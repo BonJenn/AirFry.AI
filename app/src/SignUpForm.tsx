@@ -15,8 +15,8 @@ function SignUpForm() {
     }
 
     if (password !== confirmPassword) {
-        alert('Passwords do not match!');
-        return;
+      alert('Passwords do not match!');
+      return;
     };
 
     try {
@@ -39,6 +39,11 @@ function SignUpForm() {
 
       // Call the async function to perform the database operation
       await insertUserDocument();
+
+      // Clear the form fields
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
     } catch (err) {
       console.error('Error signing up:', err);
     }
@@ -46,6 +51,8 @@ function SignUpForm() {
 
   return (
     <>
+
+    <h1 className = "Popup-Title">Sign Up</h1>
       <div className="signUpForm">
         <form onSubmit={(e) => { e.preventDefault(); handleSignUp(); }}>
           <input

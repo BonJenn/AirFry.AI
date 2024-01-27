@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './Header.css';
 import SignUpForm from './SignUpForm';
+import { API_KEY } from './config';
+
 
 function Header() {
     const [showSignUp, setShowSignUp] = useState(false);
@@ -10,7 +12,7 @@ function Header() {
     return (
         <div className="header">
             <div className="navigation">
-                <h4>Login</h4>
+                <h4 onClick={() => console.log(API_KEY)}>Login</h4>
                 <h4 onClick={toggleSignUp}>Sign up</h4>
                 <h4>My account</h4>
             </div>

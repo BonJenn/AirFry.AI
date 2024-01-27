@@ -51,6 +51,7 @@ h3 {
     z-index: 1000; /* Ensure it's above other content */
 }
 
+
 /* Optional: Add a background overlay */
 .overlay {
     position: fixed;
