@@ -54,7 +54,7 @@ function App() {
 
       const recipeDocument = {
         content: recipeContent,
-        createdAt: new Date(), // Optionally add a timestamp
+        createdAt: new Date(), // Optionally add a timestamp 
       };
 
       // Get a reference to the collection
@@ -102,6 +102,7 @@ function App() {
         setairFryOutput(data.choices[0].message.content.trim());
       })
       .catch((error) => {
+        
         console.error('Failed to fetch data from OpenAI API', error);
       })
       .finally(() => {
