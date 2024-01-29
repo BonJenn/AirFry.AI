@@ -14,6 +14,11 @@ function App() {
   const [toggleState, setToggleState] = useState(false);
   const [unit, setUnit] = useState('Fahrenheit');
   const [isLoading, setIsLoading] = useState(false);
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarVisible(!isSidebarVisible);
+  };
 
   useEffect(() => {
     async function login() {
@@ -70,10 +75,11 @@ function App() {
 
   return (
     <>
-      <div className="header">
-        <Header />
-      </div>
-      <div className="main-content">
+      
+     
+      
+      <Header toggleSidebar={toggleSidebar} />
+      <div className={`main-content ${isSidebarVisible ? 'sidebar-visible' : ''}`}>
         <div className="toggle-area">
           <h3 className="label-left">Time & Temp</h3>
           <Toggle
