@@ -8,17 +8,29 @@ function Header({ toggleMainContent }) {
     const [showLogin, setShowLogin] = useState(false);
     const [sidebarVisible, setSidebarVisible] = useState(false);
 
-    const toggleSignUp = () => setShowSignUp(!showSignUp);
-    const toggleLogin = () => setShowLogin(!showLogin);
+    const toggleSignUp = () => {
+        setShowSignUp(true);
+        setShowLogin(false);
+    };
+
+    const toggleLogin = () => {
+        setShowLogin(true);
+        setShowSignUp(false);
+    };
+
     const toggleHamburgerMenu = () => {
         setSidebarVisible(!sidebarVisible);
-        toggleMainContent(!sidebarVisible);
+    };
+
+    const closePopups = () => {
+        setShowSignUp(false);
+        setShowLogin(false);
     };
 
     return (
         <>
             <div className="headerInfo">
-                <h1><span>AirFry</span><span>.ai</span></h1>
+                <h1>AirFry<span className="ai-color">.ai</span></h1>
                 <h3>Fry Smarter.</h3>
             </div>
             <button className={`hamburger-menu ${sidebarVisible ? 'toggled' : ''}`} onClick={toggleHamburgerMenu}>
@@ -32,26 +44,22 @@ function Header({ toggleMainContent }) {
                     <h4>Log Out</h4>
                 </div>
             </div>
-            {showSignUp && (
-                <>
-                    <div className="overlay" onClick={toggleSignUp}></div>
-                    <div className="signupPopup">
-                        <SignUpForm />
-                        <button onClick={toggleSignUp}>Close</button>
-                    </div>
-                </>
-            )}
-            {showLogin && (
-                <>
-                    <div className="overlay" onClick={toggleLogin}></div>
-                    <div className="loginPopup">
-                        <LoginForm />
-                        <button onClick={toggleLogin}>Close</button>
-                    </div>
-                </>
-            )}
+
+            <div className={`overlay ${showSignUp || showLogin ? 'showOverlay' : ''}`} onClick={closePopups}></div>
+
+            <div className={`popup ${showSignUp ? 'showPopup' : ''}`}>
+                <div className="popupClose" onClick={closePopups}>X</div>
+                <SignUpForm />
+            </div>
+
+            <div className={`popup ${showLogin ? 'showPopup' : ''}`}>
+                <div className="popupClose" onClick={closePopups}>X</div>
+                <LoginForm />
+            </div>
         </>
     );
 }
 
 export default Header;
+
+

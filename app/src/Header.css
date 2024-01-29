@@ -5,9 +5,12 @@
     right: 0;
     z-index: 1000;
     background-color: white;
-    padding: 1rem 0;
+    padding: 0.5rem 0;
     text-align: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .hamburger-menu {
@@ -18,18 +21,17 @@
     cursor: pointer;
     padding: 10px;
     border-radius: 5px;
-    transition: left 0.3s ease-in-out;
-}
-
-.hamburger-menu.toggled {
-    left: calc(10px + 250px); /* Move right by the width of the sidebar */
+    background-color: white;
+    color: #8a9cc3;
+    font-size: 24px;
+    transition: all 0.3s ease-in-out;
 }
 
 .sidebar {
     position: fixed;
     top: 0;
     left: -250px;
-    width: 250px;
+    width: 250px; /* Change this value to your desired width */
     height: 100%;
     background-color: #8a9cc3;
     transition: left 0.3s ease-in-out;
@@ -40,236 +42,73 @@
     left: 0;
 }
 
-.main-content {
-    transition: transform 0.3s ease-in-out;
-}
-
-.main-content.move-right {
-    transform: translateX(250px);
-}
-
 .navigation {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    height: 100%; /* Extend to full height */
-    padding-top: 60px; /* Space for header */
+    align-items: flex-start; /* Align items to start */
+    padding-top: 60px;
+    width: 92%; /* Ensure full width */
 }
 
 .navigation h4 {
     width: 100%;
-    padding: 10px 20px;
+    padding: 10px;
     cursor: pointer;
-    border-bottom: 1px solid #dddddd;
+    border-bottom: 2px solid #dddddd;
+ 
+    color: white; /* Text color */
 }
 
-
-/* Rest of your Header.css */
-
-
-.headerInfo {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 120px;
-    color: black;
-
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Added drop shadow */
-    width: 100%; /* Set width to 100% */
-    margin: 0; /* Remove any default margin */
-    width: 100%;
-}
-
-h1 {
-    margin-bottom: 0; 
-    margin-top: 0;
-}
-
-h1 span:first-child {
-    color: black;
-}
-
-h1 span:last-child {
+.ai-color {
     color: #8a9cc3;
 }
 
-h3 {
-    color: black;
-    margin-top: 0; /* Remove margin at the top of h3 */
-}
-
-/* Added CSS for the signupPopup and overlay */
-.signupPopup {
-    position: fixed; /* or 'absolute' if you want it to be positioned relative to its parent */
+.popup {
+    display: none;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 300px; /* Adjust the width as needed */
-    height: auto; /* Adjust the height as needed */
+    width: 400px;
+    min-height: 200px;
     background-color: white;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1000; /* Ensure it's above other content */
+    z-index: 4001;
+    border-radius: 8px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in;
 }
 
-.loginPopup {
-    position: fixed; /* or 'absolute' if you want it to be positioned relative to its parent */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 300px; /* Adjust the width as needed */
-    height: auto; /* Adjust the height as needed */
-    background-color: white;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1000; /* Ensure it's above other content */
-
-}
-
-
-/* Optional: Add a background overlay */
-
-Here's the updated full code for both Header.tsx and Header.css. The hamburger menu icon will always be visible and will slide with the sidebar. When the sidebar opens and closes, the main content will move to the right and then back again. The sidebar will now cover the headerInfo when it slides in.
-
-Header.tsx:
-
-tsx
-Copy code
-import React, { useState } from 'react';
-import './Header.css';
-import SignUpForm from './SignUpForm';
-import LoginForm from './LoginForm';
-
-function Header({ toggleMainContent }) {
-    const [showSignUp, setShowSignUp] = useState(false);
-    const [showLogin, setShowLogin] = useState(false);
-    const [sidebarVisible, setSidebarVisible] = useState(false);
-
-    const toggleSignUp = () => setShowSignUp(!showSignUp);
-    const toggleLogin = () => setShowLogin(!showLogin);
-    const toggleHamburgerMenu = () => {
-        setSidebarVisible(!sidebarVisible);
-        toggleMainContent(!sidebarVisible);
-    };
-
-    return (
-        <>
-            <div className="headerInfo">
-                <h1><span>AirFry</span><span>.ai</span></h1>
-                <h3>Fry Smarter.</h3>
-            </div>
-            <button className={`hamburger-menu ${sidebarVisible ? 'toggled' : ''}`} onClick={toggleHamburgerMenu}>
-                ☰
-            </button>
-            <div className={`sidebar ${sidebarVisible ? 'visible' : ''}`}>
-                <div className="navigation">
-                    <h4 onClick={toggleLogin}>Log In</h4>
-                    <h4 onClick={toggleSignUp}>Sign up</h4>
-                    <h4>My account</h4>
-                    <h4>Log Out</h4>
-                </div>
-            </div>
-            {showSignUp && (
-                <>
-                    <div className="overlay" onClick={toggleSignUp}></div>
-                    <div className="signupPopup">
-                        <SignUpForm />
-                        <button onClick={toggleSignUp}>Close</button>
-                    </div>
-                </>
-            )}
-            {showLogin && (
-                <>
-                    <div className="overlay" onClick={toggleLogin}></div>
-                    <div className="loginPopup">
-                        <LoginForm />
-                        <button onClick={toggleLogin}>Close</button>
-                    </div>
-                </>
-            )}
-        </>
-    );
-}
-
-export default Header;
-Header.css:
-
-css
-Copy code
-.headerInfo {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    background-color: white;
-    padding: 1rem 0;
-    text-align: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.hamburger-menu {
-    position: fixed;
+.popupClose {
+    position: absolute;
     top: 10px;
-    left: 10px;
-    z-index: 3000;
+    right: 10px;
     cursor: pointer;
-    padding: 10px;
-    border-radius: 5px;
-    transition: left 0.3s ease-in-out;
+    font-weight: bold;
+    color: #8a9cc3;
 }
 
-.hamburger-menu.toggled {
-    left: calc(10px + 250px); /* Move right by the width of the sidebar */
+.showPopup {
+    display: block;
+    opacity: 1;
 }
-
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: -250px;
-    width: 250px;
-    height: 100%;
-    background-color: #8a9cc3;
-    transition: left 0.3s ease-in-out;
-    z-index: 2000;
-}
-
-.sidebar.visible {
-    left: 0;
-}
-
-.main-content {
-    transition: transform 0.3s ease-in-out;
-}
-
-.main-content.move-right {
-    transform: translateX(250px);
-}
-
-.navigation {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    height: 100%; /* Extend to full height */
-    padding-top: 60px; /* Space for header */
-}
-
-.navigation h4 {
-    width: 100%;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-bottom: 1px solid #dddddd;
-}
-
-/* Rest of your styles for SignUpForm and LoginForm */
 
 .overlay {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
+    width: 100%;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 999;
+    z-index: 1500; /* Make sure this is less than the sidebar's z-index */
+    display: none;
+}
+
+.showOverlay {
+    display: block;
+}
+
+h1, h3 {
+    margin: 0.25rem 0;
 }

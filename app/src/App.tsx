@@ -20,6 +20,10 @@ function App() {
     setIsSidebarVisible(!isSidebarVisible);
   };
 
+  const closeSidebar = () => {
+    setIsSidebarVisible(false);
+  };
+
   useEffect(() => {
     async function login() {
       const credentials = Realm.Credentials.anonymous();
@@ -75,10 +79,8 @@ function App() {
 
   return (
     <>
-      
-     
-      
       <Header toggleSidebar={toggleSidebar} />
+      {isSidebarVisible && <div className="overlay" onClick={closeSidebar}></div>}
       <div className={`main-content ${isSidebarVisible ? 'sidebar-visible' : ''}`}>
         <div className="toggle-area">
           <h3 className="label-left">Time & Temp</h3>
