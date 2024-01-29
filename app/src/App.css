@@ -6,27 +6,24 @@ body {
   height: 100vh;
   box-sizing: border-box;
   background-color: #f7f7f7;
-  margin: 0; /* Ensures there is no default margin */
-  padding-top: 60px; /* Adjust this value based on your header's height */
+  margin: 0;
+  padding-top: 60px;
 }
 
 .header {
   width: 100%;
-  background-color: #0062cc; /* Replace with your desired header background color */
+  background-color: #0062cc;
   color: white;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1001; /* Ensures the header is above other elements */
-  padding: 1rem 0; /* Adjust based on your header content */
+  z-index: 1001;
+  padding: 1rem 0;
   text-align: center;
-  box-sizing: border-box; /* Include padding in the width */
+  box-sizing: border-box;
 }
 
-/* You may need additional header styles for navigation, logo, etc. */
-
-/* Styles for the main content area */
 .main-content {
   display: flex;
   flex-direction: column;
@@ -34,18 +31,31 @@ body {
   justify-content: center;
   margin: 0 auto;
   text-align: center;
+}
 
+.toggle-area {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 20px 0;
+  padding: 20px;
+}
+
+.toggle-area .label-left,
+.toggle-area .label-right {
+  margin: 0 auto; /* Center both labels horizontally */
+ 
 }
 
 h3, p, span {
   color: black;
+  text-align: center;
 }
 
-/* Styles for the containers with the rounded corners and drop shadow */
 .airFryTimeTemp, .airFryRecipe {
   background-color: #FFFFFF;
-  border-radius: 10px; /* Adjust as needed for rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adjust as needed for drop shadow */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   padding: 20px;
   margin: 20px auto;
   display: flex;
@@ -53,11 +63,10 @@ h3, p, span {
   align-items: center;
   justify-content: center;
   max-width: 600px;
-  width: calc(100% - 40px); /* Adjust width based on your design */
+  width: calc(100% - 40px);
   box-sizing: border-box;
 }
 
-/* Style adjustments for input fields */
 input[type='text'] {
   background-color: #FFFFFF;
   border: 1px solid #8a9cc3;
@@ -68,7 +77,6 @@ input[type='text'] {
   box-sizing: border-box;
 }
 
-/* Style adjustments for buttons */
 button {
   margin: 10px;
   padding: 10px;
@@ -84,19 +92,24 @@ button:hover {
   background-color: #6a7b9c;
 }
 
-/* Style adjustments for radio buttons and their labels */
-input[type="radio"] {
+.temp-unit {
+  display: flex;
+  flex-direction: row;
+  justify-self: flex-start;
+}
+
+.temp-unit label {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+}
+
+.temp-unit input[type="radio"] {
   margin-right: 5px;
 }
 
-label {
-  margin-right: 15px;
-  font-size: 16px;
-}
-
-/* Styles for modal loading popup */
 .modal {
-  display: none; /* Initially don't display it */
+  display: none;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -104,10 +117,9 @@ label {
   padding: 20px;
   background-color: white;
   border: 1px solid #ccc;
-  z-index: 1002; /* Above #root and header */
+  z-index: 1002;
 }
 
-/* When active, display the modal */
 .modal.active {
   display: flex;
   align-items: center;
