@@ -71,56 +71,100 @@ function App() {
 
   return (
     <>
-      <Header />
-      <div className="toggle-container">
+    <div className = "header">
+      <Header /> {/* Rendering the Header component */}
+    </div>
+    <div className = "main-content">
+
+    
+      <div>
+        {/* Toggle component for switching between modes */}
+        <span>Time & Temp</span>
         <Toggle
-          checked={toggleState}
+          defaultChecked={toggleState}
           onChange={() => setToggleState(!toggleState)}
-          icons={false}
         />
-        <span>{toggleState ? 'Recipes' : 'Time & Temp'}</span>
+        <span>Recipes</span>
       </div>
-      <div className="action-container">
-        <h1>{toggleState ? 'Give Me a Recipe For...' : "What's Cooking?"}</h1>
-        <div className="temperature-toggle">
-          <label>
-            <input
-              type="radio"
-              value="Fahrenheit"
-              checked={unit === 'Fahrenheit'}
-              onChange={() => setUnit('Fahrenheit')}
-            />
-            °F
-          </label>
-          <label>
-            <input
-              type="radio"
-              value="Celsius"
-              checked={unit === 'Celsius'}
-              onChange={() => setUnit('Celsius')}
-            />
-            °C
-          </label>
+  
+      {/* Conditionally render sections based on toggleState */}
+      {!toggleState ? (
+        // If toggleState is false, show the cooking time section
+        <div className="airFryTimeTemp">
+          <h1>What's Cooking?</h1> {/* Header */}
+          <input
+            type="text"
+            value={input} // Make sure to use the correct state variable name
+            onChange={(e) => setInput(e.target.value)} // Make sure to use the correct state setter function
+            placeholder="Enter food item"
+          /> {/* Input field for air frying time query */}
+          <div>
+            {/* Radio buttons for selecting the unit of temperature */}
+            <label>
+              <input
+                type="radio"
+                value="Fahrenheit"
+                checked={unit === 'Fahrenheit'}
+                onChange={(e) => setUnit(e.target.value)}
+              />
+              Fahrenheit
+            </label>
+            <label>
+              <input
+                type="radio"
+                value="Celsius"
+                checked={unit === 'Celsius'}
+                onChange={(e) => setUnit(e.target.value)}
+              />
+              Celsius
+            </label>
+          </div>
+          <button onClick={handleAction}>Get Cooking Time</button> {/* Button to trigger API call for cooking time */}
+          <div>
+            <p>{output}</p> {/* Displaying the air frying time result */}
+          </div>
         </div>
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Chicken, ribs, etc..."
-        />
-        <button onClick={handleAction}>
-          {toggleState ? 'Create Recipe' : 'Air Fry'}
-        </button>
-        <div>{output}</div>
-      </div>
-      {isLoading && (
-        <div className="modal">
-          <p>One sec, AI is preparing your {toggleState ? 'recipe' : 'cooking time'}...</p>
+      ) : (
+        // If toggleState is true, show the recipe section
+        <div className="airFryRecipe">
+          <h1>Give Me a Recipe For...</h1> {/* Header */}
+          <input
+            type="text"
+            value={input} // Make sure to use the correct state variable name
+            onChange={(e) => setInput(e.target.value)} // Make sure to use the correct state setter function
+            placeholder="Enter food item for recipe"
+          /> {/* Input field for air fryer recipe query */}
+          <div>
+            {/* Radio buttons for selecting the unit of temperature */}
+            <label>
+              <input
+                type="radio"
+                value="Fahrenheit"
+                checked={unit === 'Fahrenheit'}
+                onChange={(e) => setUnit(e.target.value)}
+              />
+              Fahrenheit
+            </label>
+            <label>
+              <input
+                type="radio"
+                value="Celsius"
+                checked={unit === 'Celsius'}
+                onChange={(e) => setUnit(e.target.value)}
+              />
+              Celsius
+            </label>
+          </div>
+          <button onClick={handleAction}>Create Recipe</button> {/* Button to trigger API call for recipe */}
+          <div>
+            <p>{output}</p> {/* Displaying the air fryer recipe result */}
+          </div>
         </div>
       )}
+    </div>
     </>
   );
-}
+} // This is the correct closing brace for the App function
 
 export default App;
 export { REALM_APP_ID };
