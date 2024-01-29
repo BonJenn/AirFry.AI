@@ -24,13 +24,7 @@ body {
   box-sizing: border-box;
 }
 
-.main-content {
-  transition: margin-left 0.3s ease-in-out;
-}
 
-.main-content.sidebar-visible {
-  margin-left: 250px; /* Same as the width of the sidebar */
-}
 
 
 /*
@@ -76,6 +70,10 @@ h3, p, span {
   max-width: 600px;
   width: calc(100% - 40px);
   box-sizing: border-box;
+}
+
+h1 {
+  text-align: center;
 }
 
 input[type='text'] {
@@ -135,4 +133,23 @@ button:hover {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+
+.grow {
+  animation: growEffect 0.5s ease forwards;
+}
+
+.shrink {
+  animation: shrinkEffect 0.5s ease forwards;
+}
+
+@keyframes growEffect {
+  from { transform: scale(0.95); }
+  to { transform: scale(1); }
+}
+
+@keyframes shrinkEffect {
+  from { transform: scale(1); }
+  to { transform: scale(0.95); }
 }

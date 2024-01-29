@@ -47,13 +47,15 @@ function Header({ toggleMainContent }) {
 
             <div className={`overlay ${showSignUp || showLogin ? 'showOverlay' : ''}`} onClick={closePopups}></div>
 
-            <div className={`popup ${showSignUp ? 'showPopup' : ''}`}>
+            <div id="signupPopup" className={`popup ${showSignUp ? 'showPopup' : ''}`}>
                 <div className="popupClose" onClick={closePopups}>X</div>
+                <h2 className="popup-title">Sign Up</h2>
                 <SignUpForm />
             </div>
 
-            <div className={`popup ${showLogin ? 'showPopup' : ''}`}>
+            <div id="loginPopup" className={`popup ${showLogin ? 'showPopup' : ''}`}>
                 <div className="popupClose" onClick={closePopups}>X</div>
+                <h2 className="popup-title">Log In</h2>
                 <LoginForm />
             </div>
         </>
@@ -61,5 +63,3 @@ function Header({ toggleMainContent }) {
 }
 
 export default Header;
-
-

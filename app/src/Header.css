@@ -31,7 +31,7 @@
     position: fixed;
     top: 0;
     left: -250px;
-    width: 250px; /* Change this value to your desired width */
+    width: 250px;
     height: 100%;
     background-color: #8a9cc3;
     transition: left 0.3s ease-in-out;
@@ -55,7 +55,8 @@
     padding: 10px;
     cursor: pointer;
     border-bottom: 2px solid #dddddd;
- 
+  
+    padding-left: 20px; /* Add padding to align text inside the sidebar */
     color: white; /* Text color */
 }
 
@@ -80,6 +81,23 @@
     transition: opacity 0.3s ease-in;
 }
 
+.popup-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px; /* Adjust the height as needed */
+}
+
+.popup input[type='text'], .popup input[type='password'], .popup input[type='email'] {
+  background-color: white; /* Set background to white */
+  border: 1px solid #8a9cc3; /* Set border color */
+  height: 40px; /* Make input taller */
+  width: 90%; /* Make input wider */
+  margin: 10px 0; /* Add some margin for spacing */
+  padding: 0 10px; /* Add padding inside the input */
+  box-sizing: border-box; /* Include padding and border in the width and height */
+}
+
 .popupClose {
     position: absolute;
     top: 10px;
@@ -101,7 +119,7 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1500; /* Make sure this is less than the sidebar's z-index */
+    z-index: 4000;
     display: none;
 }
 
