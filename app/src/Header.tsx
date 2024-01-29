@@ -14,6 +14,7 @@ function Header() {
     return (
         <div className="header">
             <div className="navigation">
+                <h4> Log Out</h4>
                 <h4 onClick={toggleLogin}>Log In</h4> {/* Bind the toggle function */}
                 <h4 onClick={toggleSignUp}>Sign up</h4>
                 <h4>My account</h4>

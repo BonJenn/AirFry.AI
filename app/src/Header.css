@@ -1,11 +1,26 @@
+.header {
+    margin-bottom: 40px;
+    background-color: white;
+}
+
 .navigation {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    background-color: black;
-    height: 10;
-    gap: 10px;
+    align-items: center;
+    background-color: #8a9cc3;
+    height: 40px;
+    padding-right: 10px; /* Add padding to ensure content is not touching the edge */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    width: 100%;
+}
 
+
+.navigation h4 {
+    flex-shrink: 0;
+    min-width: 80px; /* Adjust as needed */
+    margin-right: 10px; /* Ensure there is space between the items */
+    white-space: nowrap; /* Prevent text from wrapping */
 }
 
 .headerInfo {
@@ -14,14 +29,17 @@
     justify-content: center;
     align-items: center;
     height: 120px;
-    background-color: white;
+    color: black;
+
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Added drop shadow */
+    width: 100%; /* Set width to 100% */
+    margin: 0; /* Remove any default margin */
+    width: 100%;
 }
 
 h1 {
     margin-bottom: 0; 
     margin-top: 0;
-   
- 
 }
 
 h1 span:first-child {
