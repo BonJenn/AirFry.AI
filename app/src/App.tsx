@@ -85,72 +85,96 @@ function App() {
   }
 
   // Render method for the component
-  return (
-    <>
-      <Header toggleSidebar={toggleSidebar} /> {/* Render the Header component */}
-      {isSidebarVisible && <div className="overlay" onClick={closeSidebar}></div>} {/* Overlay for sidebar, closes on click */}
-      <div className={`main-content ${isSidebarVisible ? 'sidebar-visible' : ''}`}>
-        <div className="toggle-area">
-          <h3 className="label-left">Time & Temp</h3> {/* Label for the left side of the toggle */}
-          <Toggle
-            defaultChecked={toggleState}
-            icons={false}
-            onChange={() => setToggleState(!toggleState)} // Toggle switch for switching between Time & Temp and Recipes
-          />
-          <h3 className="label-right">Recipes</h3> {/* Label for the right side of the toggle */}
-        </div>
-
-        {!toggleState ? (
-          <div className={`airFryTimeTemp ${toggleState ? 'shrink' : 'grow'}`}>
-            {/* Air Fry Time and Temp Section */}
-            <h1>What's Cooking?</h1>
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Enter food item"
-            />
-            <div className="temp-unit">
-              <label>
-                <input
-                  type="radio"
-                  value="Fahrenheit"
-                  checked={unit === 'Fahrenheit'}
-                  onChange={(e) => setUnit(e.target.value)}
-                />
-                Fahrenheit
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  value="Celsius"
-                  checked={unit === 'Celsius'}
-                  onChange={(e) => setUnit(e.target.value)}
-                />
-                Celsius
-              </label>
-            </div>
-            <button onClick={handleAction}>Get Cooking Time</button> {/* Button to trigger the main action */}
-            {isLoading ? <p>Loading...</p> : <p>{output}</p>} {/* Display loading message or output */}
-          </div>
-        ) : (
-          <div className={`airFryRecipe ${toggleState ? 'grow' : 'shrink'}`}>
-            {/* Air Fry Recipe Section */}
-            <h1>Give Me a Recipe For...</h1>
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Enter food item for recipe"
-            />
-            <button onClick={handleAction}>Create Recipe</button> {/* Button to trigger the main action for recipes */}
-            {isLoading ? <p>Loading...</p> : <p>{output}</p>} {/* Display loading message or output */}
-          </div>
-        )}
+    // Render method for the component
+return (
+  <>
+    <Header toggleSidebar={toggleSidebar} /> {/* Render the Header component */}
+    {isSidebarVisible && <div className="overlay" onClick={closeSidebar}></div>} {/* Overlay for sidebar, closes on click */}
+    <div className={`main-content ${isSidebarVisible ? 'sidebar-visible' : ''}`}>
+      <div className="toggle-area">
+        <h3 className="label-left">Time & Temp</h3> {/* Label for the left side of the toggle */}
+        <Toggle
+          defaultChecked={toggleState}
+          icons={false}
+          onChange={() => setToggleState(!toggleState)} // Toggle switch for switching between Time & Temp and Recipes
+        />
+        <h3 className="label-right">Recipes</h3> {/* Label for the right side of the toggle */}
       </div>
-    </>
-  );
-}
+
+      {!toggleState ? (
+        <div className={`airFryTimeTemp ${toggleState ? 'shrink' : 'grow'}`}>
+          {/* Air Fry Time and Temp Section */}
+          <h1>What's Cooking?</h1>
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Enter food item"
+          />
+          {/* Radio buttons for unit selection */}
+          <div className="temp-unit">
+            <label>
+              <input
+                type="radio"
+                value="Fahrenheit"
+                checked={unit === 'Fahrenheit'}
+                onChange={(e) => setUnit(e.target.value)}
+              />
+              Fahrenheit
+            </label>
+            <label>
+              <input
+                type="radio"
+                value="Celsius"
+                checked={unit === 'Celsius'}
+                onChange={(e) => setUnit(e.target.value)}
+              />
+              Celsius
+            </label>
+          </div>
+          <button onClick={handleAction}>Get Cooking Time</button> {/* Button to trigger the main action */}
+          {isLoading ? <p>Loading...</p> : <p>{output}</p>} {/* Display loading message or output */}
+        </div>
+      ) : (
+        <div className={`airFryRecipe ${toggleState ? 'grow' : 'shrink'}`}>
+          {/* Air Fry Recipe Section */}
+          <h1>Give Me a Recipe For...</h1>
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Enter food item for recipe"
+          />
+          {/* Radio buttons for unit selection */}
+          <div className="temp-unit">
+            <label>
+              <input
+                type="radio"
+                value="Fahrenheit"
+                checked={unit === 'Fahrenheit'}
+                onChange={(e) => setUnit(e.target.value)}
+              />
+              Fahrenheit
+            </label>
+            <label>
+              <input
+                type="radio"
+                value="Celsius"
+                checked={unit === 'Celsius'}
+                onChange={(e) => setUnit(e.target.value)}
+              />
+              Celsius
+            </label>
+          </div>
+          <button onClick={handleAction}>Create Recipe</button> {/* Button to trigger the main action for recipes */}
+          {isLoading ? <p>Loading...</p> : <p>{output}</p>} {/* Display loading message or output */}
+        </div>
+      )}
+    </div>
+  </>
+);
+
+  }
 
 export default App; // Export the App component as the default export
 export { REALM_APP_ID }; // Export the REALM_APP_ID constant

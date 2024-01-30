@@ -70,6 +70,16 @@ h3, p, span {
   box-sizing: border-box;
 }
 
+.airFryTimeTemp input[type="radio"],
+.airFryRecipe input[type="radio"] {
+  display: inline-block !important; /* Ensure radio buttons are visible, added !important to override any other styles */
+}
+
+.airFryTimeTemp label,
+.airFryRecipe label {
+  color: #8a9cc3 !important; /* Set label color next to radio buttons, added !important to override any other styles */
+}
+
 h1 {
   text-align: center;
 }
