@@ -51,7 +51,7 @@
 }
 
 .navigation h4 {
-    width: 100%;
+    width: 90%;
     padding: 10px;
     cursor: pointer;
     border-bottom: 2px solid #dddddd;
@@ -72,6 +72,7 @@
     transform: translate(-50%, -50%);
     width: 400px;
     min-height: 200px;
+    height: 400px;
     background-color: white;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -81,12 +82,6 @@
     transition: opacity 0.3s ease-in;
 }
 
-.popup-title {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 50px; /* Adjust the height as needed */
-}
 
 .popup input[type='text'], .popup input[type='password'], .popup input[type='email'] {
   background-color: white; /* Set background to white */

@@ -1,11 +1,13 @@
+// Importing necessary modules and components
 import React, { useState, useEffect } from 'react';
-import Toggle from 'react-toggle';
-import 'react-toggle/style.css'; // Importing styles for the toggle component
-import './App.css'; // Importing custom styles for the app
-import Header from './Header'; // Importing the Header component
-import * as Realm from "realm-web";
-import { REALM_APP_ID, API_KEY } from './config';
+import Toggle from 'react-toggle'; // Toggle component for switching views
+import 'react-toggle/style.css'; // CSS for the Toggle component
+import './App.css'; // Custom CSS for the app
+import Header from './Header'; // Header component
+import * as Realm from "realm-web"; // Realm Web SDK for MongoDB Realm
+import { REALM_APP_ID, API_KEY } from './config'; // Configuration constants
 
+// Initialize Realm app with the provided app ID
 const app = new Realm.App({ id: REALM_APP_ID });
 
 // Main App component
@@ -19,35 +21,30 @@ function App() {
   const [isSidebarVisible, setIsSidebarVisible] = useState(false); // State for sidebar visibility
 
   // Function to toggle the visibility of the sidebar
-  const toggleSidebar = () => {
-    setIsSidebarVisible(!isSidebarVisible);
-  };
+  const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible);
 
   // Function to close the sidebar
-  const closeSidebar = () => {
-    setIsSidebarVisible(false);
-  };
+  const closeSidebar = () => setIsSidebarVisible(false);
 
   // Effect hook for handling user login on component mount
   useEffect(() => {
     async function login() {
-      const credentials = Realm.Credentials.anonymous(); // Anonymous credentials for Realm
+      const credentials = Realm.Credentials.anonymous(); // Using anonymous credentials for Realm
       try {
-        await app.logIn(credentials); // Attempt to log in
+        await app.logIn(credentials); // Login to Realm
         console.log("Successfully logged in!");
       } catch (err) {
-        console.error("Failed to log in", err); // Log any login errors
+        console.error("Failed to log in", err);
       }
     }
-    login(); // Invoke the login function
+    login();
   }, []); // Empty dependency array to run only once on mount
 
   // Function to handle the main action based on toggle state
   async function handleAction() {
     setIsLoading(true); // Indicate the start of an API call
     const actionType = toggleState ? 'Get Recipe' : 'Air Fry'; // Determine the action type
-    // Construct the user content based on toggle state and input
-    const userContent = `Give me ${toggleState ? 'a recipe' : 'the cooking time'} for ${input} in ${unit}`;
+    const userContent = `Give me ${toggleState ? 'a recipe' : 'the cooking time'} for ${input} in ${unit}`; // Construct the user content
 
     // API request body
     const APIBody = {
@@ -61,53 +58,51 @@ function App() {
     };
 
     try {
-      // Make the API call to OpenAI
+      // Fetching data from OpenAI API
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + API_KEY, // Authorization with the API key
         },
-        body: JSON.stringify(APIBody), // Stringify the API body for the request
+        body: JSON.stringify(APIBody),
       });
       const data = await response.json(); // Parse the JSON response
       setOutput(data.choices[0].message.content.trim()); // Set the output in state
       if (toggleState) {
-        // If the toggle is set to 'Get Recipe', write the recipe to the database
-        await writeRecipeToDatabase(data.choices[0].message.content.trim());
+        await writeRecipeToDatabase(data.choices[0].message.content.trim()); // Write recipe to database if toggle is set for recipes
       }
     } catch (error) {
-      // Catch and log any errors from the API call
       console.error(`Failed to fetch data from OpenAI API for ${actionType}`, error);
     } finally {
       setIsLoading(false); // Indicate the end of the API call
     }
   }
 
-  // Placeholder function for writing a recipe to the database
+  // Placeholder function for writing recipe to the database
   async function writeRecipeToDatabase(recipeContent) {
-    // Database write logic would go here
+    // Logic to write recipe content to the database
   }
 
-  // Render the main app content
+  // Render method for the component
   return (
     <>
       <Header toggleSidebar={toggleSidebar} /> {/* Render the Header component */}
-      {/* Overlay for sidebar, closes sidebar on click */}
-      {isSidebarVisible && <div className="overlay" onClick={closeSidebar}></div>}
+      {isSidebarVisible && <div className="overlay" onClick={closeSidebar}></div>} {/* Overlay for sidebar, closes on click */}
       <div className={`main-content ${isSidebarVisible ? 'sidebar-visible' : ''}`}>
         <div className="toggle-area">
-          <h3 className="label-left">Time & Temp</h3>
+          <h3 className="label-left">Time & Temp</h3> {/* Label for the left side of the toggle */}
           <Toggle
             defaultChecked={toggleState}
             icons={false}
-            onChange={() => setToggleState(!toggleState)}
+            onChange={() => setToggleState(!toggleState)} // Toggle switch for switching between Time & Temp and Recipes
           />
-          <h3 className="label-right">Recipes</h3>
+          <h3 className="label-right">Recipes</h3> {/* Label for the right side of the toggle */}
         </div>
+
         {!toggleState ? (
-          // Air Fry Time and Temp Section
           <div className={`airFryTimeTemp ${toggleState ? 'shrink' : 'grow'}`}>
+            {/* Air Fry Time and Temp Section */}
             <h1>What's Cooking?</h1>
             <input
               type="text"
@@ -135,12 +130,12 @@ function App() {
                 Celsius
               </label>
             </div>
-            <button onClick={handleAction}>Get Cooking Time</button>
-            {isLoading ? <p>Loading...</p> : <p>{output}</p>}
+            <button onClick={handleAction}>Get Cooking Time</button> {/* Button to trigger the main action */}
+            {isLoading ? <p>Loading...</p> : <p>{output}</p>} {/* Display loading message or output */}
           </div>
         ) : (
-          // Air Fry Recipe Section
           <div className={`airFryRecipe ${toggleState ? 'grow' : 'shrink'}`}>
+            {/* Air Fry Recipe Section */}
             <h1>Give Me a Recipe For...</h1>
             <input
               type="text"
@@ -148,8 +143,8 @@ function App() {
               onChange={(e) => setInput(e.target.value)}
               placeholder="Enter food item for recipe"
             />
-            <button onClick={handleAction}>Create Recipe</button>
-            {isLoading ? <p>Loading...</p> : <p>{output}</p>}
+            <button onClick={handleAction}>Create Recipe</button> {/* Button to trigger the main action for recipes */}
+            {isLoading ? <p>Loading...</p> : <p>{output}</p>} {/* Display loading message or output */}
           </div>
         )}
       </div>
@@ -157,5 +152,5 @@ function App() {
   );
 }
 
-export default App;
-export { REALM_APP_ID };
+export default App; // Export the App component as the default export
+export { REALM_APP_ID }; // Export the REALM_APP_ID constant

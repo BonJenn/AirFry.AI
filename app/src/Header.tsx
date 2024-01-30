@@ -27,6 +27,18 @@ function Header({ toggleMainContent }) {
         setShowLogin(false);
     };
 
+    const handleLogout = async () => {
+        if (app.currentUser) {
+            await app.currentUser.logOut();
+            console.log('Successfully logged out');
+            // Hide any open popups
+            setShowSignUp(false);
+            setShowLogin(false);
+            // Additional logic after logout if needed
+            // For example, removing user data from the state or database
+        }
+    };
+
     return (
         <>
             <div className="headerInfo">
@@ -41,7 +53,7 @@ function Header({ toggleMainContent }) {
                     <h4 onClick={toggleLogin}>Log In</h4>
                     <h4 onClick={toggleSignUp}>Sign up</h4>
                     <h4>My account</h4>
-                    <h4>Log Out</h4>
+                    <h4 onClick={handleLogout}>Log Out</h4>
                 </div>
             </div>
 
