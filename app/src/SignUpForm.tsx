@@ -3,7 +3,7 @@ import { REALM_APP_ID } from './config';
 import * as Realm from "realm-web";
 import './SignUpForm.css';
 
-function SignUpForm() {
+function SignUpForm({ updateLoginState }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -39,6 +39,13 @@ function SignUpForm() {
 
       // Call the async function to perform the database operation
       await insertUserDocument();
+
+      // Log in the newly registered user
+      const user = await app.logIn(Realm.Credentials.emailPassword(email, password));
+      console.log('Successfully logged in!', user);
+
+      // Update login state
+      updateLoginState(true);
 
       // Clear the form fields
       setEmail('');
