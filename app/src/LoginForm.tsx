@@ -4,7 +4,7 @@ import { REALM_APP_ID } from './config';
 import * as Realm from "realm-web";
 import './LoginForm.css'; // Reuse the same styles as SignUpForm
 
-function LoginForm() {
+function LoginForm({ updateLoginState }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -15,13 +15,13 @@ function LoginForm() {
       const user = await app.logIn(credentials);
       console.log('Successfully logged in!', user);
       // You can now redirect the user or perform other actions
+      updateLoginState(true);
     } catch (err) {
       console.error('Error logging in:', err);
     }
   };
 
   return (
-
     <>
     <h1 className = "Popup-Title">Login</h1>
     <div className="loginForm">
@@ -43,7 +43,6 @@ function LoginForm() {
         <button type="submit">Log In</button>
       </form>
     </div>
-
     </>
   );
 }

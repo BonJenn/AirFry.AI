@@ -13,6 +13,14 @@
     align-items: center;
 }
 
+.user-info {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 3000;
+    color: #8a9cc3;
+}
+
 .hamburger-menu {
     position: fixed;
     top: 10px;
