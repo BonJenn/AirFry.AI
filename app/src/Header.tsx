@@ -47,10 +47,10 @@ function Header({ isLoggedIn, onLogout, toggleSidebar, isSidebarVisible, app, up
       </button>
       <div className={`sidebar ${isSidebarVisible ? 'visible' : ''}`}>
         <div className="navigation">
-          <h4 onClick={toggleLogin}>Log In</h4>
-          <h4 onClick={toggleSignUp}>Sign up</h4>
-          <h4>My account</h4>
-          <h4 onClick={handleLogout}>Log Out</h4>
+          {!isLoggedIn && <h4 onClick={toggleLogin}>Log In</h4>}
+          {!isLoggedIn && <h4 onClick={toggleSignUp}>Sign up</h4>}
+          {isLoggedIn && <h4>My account</h4>}
+          {isLoggedIn && <h4 onClick={handleLogout}>Log Out</h4>}
         </div>
       </div>
 
