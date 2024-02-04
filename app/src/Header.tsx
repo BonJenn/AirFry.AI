@@ -35,6 +35,8 @@ function Header({ isLoggedIn, onLogout, toggleSidebar, isSidebarVisible, app, up
 
   return (
     <>
+      {showSignUp || showLogin ? <div className="overlay showOverlay" onClick={closePopups}></div> : null}
+      
       <div className="headerInfo">
         <h1>AirFry<span className="ai-color">.ai</span></h1>
         <h3>Fry Smarter.</h3>
