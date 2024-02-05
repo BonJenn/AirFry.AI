@@ -18,6 +18,14 @@ function App() {
 
   const app = new Realm.App({ id: REALM_APP_ID });
 
+  const fetchRecipes = async () => {
+    const mongo = app.currentUser?.mongoClient("mongodb-atlas");
+    const recipesCollection = mongo?.db("AirFryAI").collection("Recipes");
+    const fetchedRecipes = await recipesCollection?.find({});
+    const sortedRecipes = fetchedRecipes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    setRecipes(sortedRecipes.slice(0, 40) || []); // Ensure recipes is an array and keep only the latest 40 entries
+  };
+
   useEffect(() => {
     const checkUserLoggedIn = () => {
       setIsLoggedIn(!!app.currentUser);
@@ -29,15 +37,11 @@ function App() {
   }, [app]);
 
   useEffect(() => {
-    const fetchRecipes = async () => {
-      const mongo = app.currentUser?.mongoClient("mongodb-atlas");
-      const recipesCollection = mongo?.db("AirFryAI").collection("Recipes");
-      const fetchedRecipes = await recipesCollection?.find({});
-      setRecipes(fetchedRecipes || []); // Ensure recipes is an array
-    };
+    fetchRecipes(); // Initial fetch
+    const interval = setInterval(fetchRecipes, 5000); // Poll every 5 seconds
 
-    fetchRecipes();
-  }, []); // Removed dependency on app.currentUser to ensure it runs regardless of login state
+    return () => clearInterval(interval); // Cleanup on component unmount
+  }, []); // Dependencies array is empty to run only once on mount
 
   const toggleSidebar = () => {
     setIsSidebarVisible(!isSidebarVisible);
@@ -73,18 +77,18 @@ function App() {
       });
       const data = await response.json();
       setOutput(data.choices[0].message.content.trim());
-      if (toggleState) {
-        // Assuming toggleState true means we're fetching recipes
-        const mongo = app.currentUser?.mongoClient("mongodb-atlas");
-        const recipesCollection = mongo?.db("AirFryAI").collection("Recipes");
-        const recipeDocument = {
-          name: input, // Assuming 'input' contains the food item
-          description: output, // The recipe or cooking time fetched from OpenAI API
-          unit: unit, // The unit of measurement, Fahrenheit or Celsius
-        };
-        await recipesCollection?.insertOne(recipeDocument);
-        console.log("Recipe added to the database:", recipeDocument);
-      }
+      // Adjusted to ensure both recipes and cooking times are written to the database
+      const mongo = app.currentUser?.mongoClient("mongodb-atlas");
+      const recipesCollection = mongo?.db("AirFryAI").collection("Recipes");
+      const recipeDocument = {
+        name: input, // Assuming 'input' contains the food item
+        description: output, // The recipe or cooking time fetched from OpenAI API
+        unit: unit, // The unit of measurement, Fahrenheit or Celsius
+        type: toggleState ? 'recipe' : 'cooking time', // Add a type field
+        createdAt: new Date(), // Add the current date and time
+      };
+      await recipesCollection?.insertOne(recipeDocument);
+      console.log("Data added to the database:", recipeDocument);
     } catch (error) {
       console.error(`Failed to fetch data from OpenAI API for ${actionType}`, error);
     } finally {
