@@ -22,8 +22,12 @@ function App() {
     const mongo = app.currentUser?.mongoClient("mongodb-atlas");
     const recipesCollection = mongo?.db("AirFryAI").collection("Recipes");
     const fetchedRecipes = await recipesCollection?.find({});
-    const sortedRecipes = fetchedRecipes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    setRecipes(sortedRecipes.slice(0, 40) || []); // Ensure recipes is an array and keep only the latest 40 entries
+    if (fetchedRecipes) {
+        const sortedRecipes = fetchedRecipes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setRecipes(sortedRecipes.slice(0, 40) || []); // Ensure recipes is an array and keep only the latest 40 entries
+    } else {
+        setRecipes([]);
+    }
   };
 
   useEffect(() => {
