@@ -14,6 +14,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [recipes, setRecipes] = useState([]);
 
   const app = new Realm.App({ id: REALM_APP_ID });
 
@@ -26,6 +27,17 @@ function App() {
 
     return () => {};
   }, [app]);
+
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      const mongo = app.currentUser?.mongoClient("mongodb-atlas");
+      const recipesCollection = mongo?.db("AirFryAI").collection("Recipes");
+      const fetchedRecipes = await recipesCollection?.find({});
+      setRecipes(fetchedRecipes || []); // Ensure recipes is an array
+    };
+
+    fetchRecipes();
+  }, []); // Removed dependency on app.currentUser to ensure it runs regardless of login state
 
   const toggleSidebar = () => {
     setIsSidebarVisible(!isSidebarVisible);
@@ -62,7 +74,16 @@ function App() {
       const data = await response.json();
       setOutput(data.choices[0].message.content.trim());
       if (toggleState) {
-        // Placeholder for writing recipe to the database
+        // Assuming toggleState true means we're fetching recipes
+        const mongo = app.currentUser?.mongoClient("mongodb-atlas");
+        const recipesCollection = mongo?.db("AirFryAI").collection("Recipes");
+        const recipeDocument = {
+          name: input, // Assuming 'input' contains the food item
+          description: output, // The recipe or cooking time fetched from OpenAI API
+          unit: unit, // The unit of measurement, Fahrenheit or Celsius
+        };
+        await recipesCollection?.insertOne(recipeDocument);
+        console.log("Recipe added to the database:", recipeDocument);
       }
     } catch (error) {
       console.error(`Failed to fetch data from OpenAI API for ${actionType}`, error);
@@ -161,6 +182,14 @@ function App() {
             {isLoading ? <p>Loading...</p> : <p>{output}</p>}
           </div>
         )}
+        <div className="recipes-feed">
+          {recipes.map((recipe, index) => (
+            <div key={index} className="recipe-item">
+              <h3>{recipe.name}</h3>
+              <p>{recipe.description}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </>
   );
