@@ -15,8 +15,18 @@ function App() {
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [recipes, setRecipes] = useState([]);
+  const [activeTab, setActiveTab] = useState('othersCooking'); // Default to "what others are cooking"
 
   const app = new Realm.App({ id: REALM_APP_ID });
+
+  useEffect(() => {
+    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    setIsLoggedIn(loggedIn);
+    fetchRecipes(); // Initial fetch
+    const interval = setInterval(fetchRecipes, 5000); // Poll every 5 seconds
+  
+    return () => clearInterval(interval); // Cleanup on component unmount
+  }, [isLoggedIn]);
 
   const fetchRecipes = async () => {
     // Ensure there's a current user, login anonymously if not
@@ -34,17 +44,6 @@ function App() {
       setRecipes([]);
     }
   };
-  
-  useEffect(() => {
-    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    setIsLoggedIn(loggedIn);
-    fetchRecipes(); // Initial fetch
-    const interval = setInterval(fetchRecipes, 5000); // Poll every 5 seconds
-  
-    return () => clearInterval(interval); // Cleanup on component unmount
-  }, [isLoggedIn]);
-  
-
 
   const toggleSidebar = () => {
     setIsSidebarVisible(!isSidebarVisible);
@@ -193,13 +192,37 @@ function App() {
             {isLoading ? <p>Loading...</p> : <p>{output}</p>}
           </div>
         )}
+        {isLoggedIn && (
+          <div className="tabs">
+            <button className={activeTab === 'othersCooking' ? 'active' : ''} onClick={() => setActiveTab('othersCooking')}>What others are cooking</button>
+            <button className={activeTab === 'myCooking' ? 'active' : ''} onClick={() => setActiveTab('myCooking')}>What I'm cooking</button>
+          </div>
+        )}
         <div className="recipes-feed">
-          {recipes.map((recipe, index) => (
-            <div key={index} className="recipe-item">
-              <h3>{recipe.name}</h3>
-              <p>{recipe.description}</p>
-            </div>
-          ))}
+          {isLoggedIn ? (
+            activeTab === 'othersCooking' ? (
+              recipes.map((recipe, index) => (
+                <div key={index} className="recipe-item">
+                  <h3>{recipe.name}</h3>
+                  <p>{recipe.description}</p>
+                </div>
+              ))
+            ) : (
+              recipes.filter(recipe => recipe.userId === app.currentUser.id).map((recipe, index) => (
+                <div key={index} className="recipe-item">
+                  <h3>{recipe.name}</h3>
+                  <p>{recipe.description}</p>
+                </div>
+              ))
+            )
+          ) : (
+            recipes.map((recipe, index) => (
+              <div key={index} className="recipe-item">
+                <h3>{recipe.name}</h3>
+                <p>{recipe.description}</p>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </>
