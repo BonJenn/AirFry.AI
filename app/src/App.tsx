@@ -36,11 +36,13 @@ function App() {
   };
   
   useEffect(() => {
+    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    setIsLoggedIn(loggedIn);
     fetchRecipes(); // Initial fetch
     const interval = setInterval(fetchRecipes, 5000); // Poll every 5 seconds
   
     return () => clearInterval(interval); // Cleanup on component unmount
-  }, []);
+  }, [isLoggedIn]);
   
 
 
@@ -99,13 +101,17 @@ function App() {
 
   const updateLoginState = (loggedIn) => {
     setIsLoggedIn(loggedIn);
+    localStorage.setItem('isLoggedIn', loggedIn ? 'true' : 'false');
   };
 
   return (
     <>
       <Header 
         isLoggedIn={isLoggedIn}
-        onLogout={() => setIsLoggedIn(false)}
+        onLogout={() => {
+          setIsLoggedIn(false);
+          localStorage.removeItem('isLoggedIn');
+        }}
         toggleSidebar={toggleSidebar}
         isSidebarVisible={isSidebarVisible}
         app={app} // Pass the app instance here
