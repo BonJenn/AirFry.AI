@@ -19,33 +19,30 @@ function App() {
   const app = new Realm.App({ id: REALM_APP_ID });
 
   const fetchRecipes = async () => {
-    const mongo = app.currentUser?.mongoClient("mongodb-atlas");
-    const recipesCollection = mongo?.db("AirFryAI").collection("Recipes");
-    const fetchedRecipes = await recipesCollection?.find({});
+    // Ensure there's a current user, login anonymously if not
+    if (!app.currentUser) {
+      await app.logIn(Realm.Credentials.anonymous());
+    }
+  
+    const mongo = app.currentUser.mongoClient("mongodb-atlas");
+    const recipesCollection = mongo.db("AirFryAI").collection("Recipes");
+    const fetchedRecipes = await recipesCollection.find({});
     if (fetchedRecipes) {
-        const sortedRecipes = fetchedRecipes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        setRecipes(sortedRecipes.slice(0, 40) || []); // Ensure recipes is an array and keep only the latest 40 entries
+      const sortedRecipes = fetchedRecipes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      setRecipes(sortedRecipes.slice(0, 40) || []); // Keep only the latest 40 entries
     } else {
-        setRecipes([]);
+      setRecipes([]);
     }
   };
-
-  useEffect(() => {
-    const checkUserLoggedIn = () => {
-      setIsLoggedIn(!!app.currentUser);
-    };
-
-    checkUserLoggedIn();
-
-    return () => {};
-  }, [app]);
-
+  
   useEffect(() => {
     fetchRecipes(); // Initial fetch
     const interval = setInterval(fetchRecipes, 5000); // Poll every 5 seconds
-
+  
     return () => clearInterval(interval); // Cleanup on component unmount
-  }, []); // Dependencies array is empty to run only once on mount
+  }, []);
+  
+
 
   const toggleSidebar = () => {
     setIsSidebarVisible(!isSidebarVisible);
